@@ -4,13 +4,15 @@ const service = express();
 
 const faq = require('./faqs');
 
-service.get('/faq', (req, res) => {
+service.get('/faqs/', (req, res) => {
+    if (req.query.q) {
+        let word = req.query.q
+        let filter = faq.filter(function (found) {
+            return found.question.includes(word);
+        });
+        return res.json(filter);
+    }
     return res.json(faq);
-});
-
-service.get('/faq/:number', (req, res) => {
-    const count = req.params
-    return res.json(count);
 });
 
 console.log(`Server listening on ${port}`);
